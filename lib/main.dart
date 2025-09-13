@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:formopus/ui/widgets/daily_summary.dart';
 import 'package:formopus/ui/widgets/formopus_app_bar.dart';
 
 import 'ui/theme/app_theme.dart';
@@ -47,8 +48,10 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: FormopusAppBar(title: widget.title),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            // TODO 登録されたタスクに応じてサマリを表示する
+            DailySummary(date: DateTime(2025, 1, 1), total: 10, completed: 2),
             const Text('You have pushed the button this many times:'),
             Text(
               '$_counter',
