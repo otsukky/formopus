@@ -1,5 +1,6 @@
 // viewmodels/task_viewmodel.dart
 import 'package:flutter/foundation.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../domain/repository/task_repository.dart';
 import '../../domain/status.dart';
@@ -33,6 +34,7 @@ class TaskViewModel extends ChangeNotifier {
 
   Future<void> createTask(String title, String memo, DateTime deadline) async {
     final newTask = Task(
+      id: Uuid().v7(),
       title: title,
       memo: memo,
       deadline: deadline,
@@ -52,6 +54,15 @@ class TaskViewModel extends ChangeNotifier {
       await loadTasks();
     } catch (e) {
       if (kDebugMode) print('Error deleting task: $e');
+    }
+  }
+
+  Future<void> updateTask(Task task) async {
+    try {
+      await _taskRepository.updateTask(task);
+      await loadTasks();
+    } catch (e) {
+      if (kDebugMode) print('Error updating task: $e');
     }
   }
 }

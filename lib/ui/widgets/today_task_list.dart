@@ -72,12 +72,26 @@ class _TodayTaskListState extends State<TodayTaskList> {
               subtitle: Text(task.memo),
               leading: Checkbox(
                 value: task.status.isComplete(),
-                onChanged: (value) {
+                onChanged: (value) async {
                   setState(() {
                     value!
                         ? task.status = Status.complete
                         : task.status = Status.incomplete;
                   });
+                  try {
+                    await Provider.of<TaskViewModel>(
+                      context,
+                      listen: false,
+                    ).updateTask(task);
+                  } catch (e) {
+                    if (mounted) {
+                      setState(() {
+                        value!
+                            ? task.status = Status.incomplete
+                            : task.status = Status.complete;
+                      });
+                    }
+                  }
                 },
               ),
               trailing: IconButton(
