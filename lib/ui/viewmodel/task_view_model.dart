@@ -19,6 +19,24 @@ class TaskViewModel extends ChangeNotifier {
 
   bool get isLoading => _isLoading;
 
+  DateTime _selectedDate = DateTime.now();
+
+  DateTime get selectedDate => _selectedDate;
+
+  List<Task> get selectedTasks => _tasks
+      .where(
+        (task) =>
+            task.deadline.day == _selectedDate.day &&
+            task.deadline.month == _selectedDate.month &&
+            task.deadline.year == _selectedDate.year,
+      )
+      .toList();
+
+  void changeSelectedDate(DateTime date) {
+    _selectedDate = date;
+    notifyListeners();
+  }
+
   Future<void> loadTasks() async {
     _isLoading = true;
     notifyListeners();

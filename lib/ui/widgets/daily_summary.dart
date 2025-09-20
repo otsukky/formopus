@@ -15,7 +15,6 @@ class DailySummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formattedDate = DateFormat.yMd().format(date);
     final double progress = total > 0 ? completed / total : 0.0;
     final theme = Theme.of(context);
 
@@ -25,8 +24,6 @@ class DailySummary extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(formattedDate, style: theme.textTheme.titleMedium),
-          const SizedBox(height: 8),
           if (total > 0)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

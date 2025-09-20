@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:formopus/ui/widgets/date_switcher.dart';
 import 'package:provider/provider.dart';
 
 import '../viewmodel/task_view_model.dart';
@@ -26,37 +27,33 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<TaskViewModel>(
-      builder: (context, viewModel, child) {
-        return Scaffold(
-          appBar: FormopusAppBar(title: widget.title),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                // TODO 登録されたタスクに応じてサマリを表示する
-                DailySummary(
-                  date: DateTime.now(),
-                  total: viewModel.tasks.length,
-                  completed: viewModel.tasks
-                      .where((task) => task.status.isComplete())
-                      .length,
-                ),
-                Expanded(child: TodayTaskList(tasks: viewModel.tasks)),
-              ],
+  Widget build(BuildContext context) => Consumer<TaskViewModel>(
+    builder: (context, viewModel, child) => Scaffold(
+      appBar: FormopusAppBar(title: widget.title),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            DateSwitcher(),
+            DailySummary(
+              date: viewModel.selectedDate,
+              total: viewModel.selectedTasks.length,
+              completed: viewModel.selectedTasks
+                  .where((task) => task.status.isComplete())
+                  .length,
             ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => _createTask(context),
-            tooltip: "タスクの追加",
-            shape: CircleBorder(),
-            child: const Icon(Icons.add),
-          ),
-        );
-      },
-    );
-  }
+            Expanded(child: TodayTaskList(tasks: viewModel.selectedTasks)),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _createTask(context),
+        tooltip: "タスクの追加",
+        shape: CircleBorder(),
+        child: const Icon(Icons.add),
+      ),
+    ),
+  );
 
   void _createTask(BuildContext dialogContext) async {
     final newTaskDetails = await showDialog<Map<String, dynamic>>(
