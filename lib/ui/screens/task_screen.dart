@@ -20,9 +20,9 @@ class _TaskScreenState extends State<TaskScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<TaskViewModel>(context, listen: false).loadTasks();
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => Provider.of<TaskViewModel>(context, listen: false).loadTasks(),
+    );
   }
 
   @override

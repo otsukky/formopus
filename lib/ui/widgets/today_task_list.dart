@@ -17,48 +17,6 @@ class TodayTaskList extends StatefulWidget {
 }
 
 class _TodayTaskListState extends State<TodayTaskList> {
-  void _deleteTask(Task task) async {
-    final theme = Theme.of(context);
-    final taskTitle = task.title;
-    final bool? shouldDelete = await showModalBottomSheet<bool>(
-      context: context,
-      backgroundColor: theme.colorScheme.surface,
-      builder: (BuildContext bc) {
-        return DeleteConfirmation(
-          taskTitle: taskTitle,
-          theme: theme,
-          bottomSheetContext: bc,
-        );
-      },
-    );
-
-    if (!mounted) return;
-
-    if (shouldDelete == true) {
-      try {
-        await Provider.of<TaskViewModel>(
-          context,
-          listen: false,
-        ).deleteTask(task);
-
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("$taskTitle を削除しました"),
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("$taskTitle を削除に失敗しました"),
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -73,11 +31,11 @@ class _TodayTaskListState extends State<TodayTaskList> {
               leading: Checkbox(
                 value: task.status.isComplete(),
                 onChanged: (value) async {
-                  setState(() {
-                    value!
+                  setState(
+                    () => value!
                         ? task.status = Status.complete
-                        : task.status = Status.incomplete;
-                  });
+                        : task.status = Status.incomplete,
+                  );
                   try {
                     await Provider.of<TaskViewModel>(
                       context,
@@ -85,11 +43,11 @@ class _TodayTaskListState extends State<TodayTaskList> {
                     ).updateTask(task);
                   } catch (e) {
                     if (mounted) {
-                      setState(() {
-                        value!
+                      setState(
+                        () => value!
                             ? task.status = Status.incomplete
-                            : task.status = Status.complete;
-                      });
+                            : task.status = Status.complete,
+                      );
                     }
                   }
                 },
@@ -112,5 +70,46 @@ class _TodayTaskListState extends State<TodayTaskList> {
           )
           .toList(),
     );
+  }
+
+  void _deleteTask(Task task) async {
+    final theme = Theme.of(context);
+    final taskTitle = task.title;
+    final bool? shouldDelete = await showModalBottomSheet<bool>(
+      context: context,
+      backgroundColor: theme.colorScheme.surface,
+      builder: (BuildContext bc) => DeleteConfirmation(
+        taskTitle: taskTitle,
+        theme: theme,
+        bottomSheetContext: bc,
+      ),
+    );
+
+    if (!mounted) return;
+
+    if (shouldDelete == true) {
+      try {
+        await Provider.of<TaskViewModel>(
+          context,
+          listen: false,
+        ).deleteTask(task);
+
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("$taskTitle を削除しました"),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("$taskTitle を削除に失敗しました"),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    }
   }
 }
