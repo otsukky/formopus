@@ -1,4 +1,3 @@
-// 日別のタスク合計数を母数とし、うち何件消化したかを視覚的に表示するウィジェット
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -23,12 +22,12 @@ class DailySummary extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
-        mainAxisSize: MainAxisSize.min, // 必要最小限の高さ
-        crossAxisAlignment: CrossAxisAlignment.start, // 子ウィジェット左寄せ
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(formattedDate, style: theme.textTheme.titleMedium),
-          const SizedBox(height: 8), // 日付とプログレスバーの間のスペース
-          if (total > 0) // タスクが1件以上ある場合のみプログレスバーと進捗テキストを表示
+          const SizedBox(height: 8),
+          if (total > 0)
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -41,7 +40,7 @@ class DailySummary extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(5),
                 ),
-                const SizedBox(height: 4), // プログレスバーとテキストの間のスペース
+                const SizedBox(height: 4),
                 Text(
                   '$completed / $total 件完了',
                   style: Theme.of(context).textTheme.bodySmall,
@@ -49,10 +48,7 @@ class DailySummary extends StatelessWidget {
               ],
             )
           else
-            Text(
-              '本日のタスクはありません', // タスクがない場合の表示
-              style: theme.textTheme.bodyMedium,
-            ),
+            Text('本日のタスクはありません', style: theme.textTheme.bodyMedium),
         ],
       ),
     );

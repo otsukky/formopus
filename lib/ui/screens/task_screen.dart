@@ -20,9 +20,9 @@ class _TaskScreenState extends State<TaskScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<TaskViewModel>(context, listen: false).loadTasks();
-    });
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => Provider.of<TaskViewModel>(context, listen: false).loadTasks(),
+    );
   }
 
   @override
@@ -37,7 +37,7 @@ class _TaskScreenState extends State<TaskScreen> {
               children: [
                 // TODO 登録されたタスクに応じてサマリを表示する
                 DailySummary(
-                  date: DateTime(2025, 1, 1),
+                  date: DateTime.now(),
                   total: viewModel.tasks.length,
                   completed: viewModel.tasks
                       .where((task) => task.status.isComplete())
