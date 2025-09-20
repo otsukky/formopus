@@ -24,9 +24,7 @@ class TaskViewModel extends ChangeNotifier {
     try {
       _tasks = await _taskRepository.getTasks();
     } catch (e) {
-      if (kDebugMode) {
-        print('Error loading tasks: $e');
-      }
+      if (kDebugMode) print('Error loading tasks: $e');
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -44,10 +42,16 @@ class TaskViewModel extends ChangeNotifier {
       await _taskRepository.addTask(newTask);
       await loadTasks();
     } catch (e) {
-      // エラーハンドリング
-      if (kDebugMode) {
-        print('Error creating task: $e');
-      }
+      if (kDebugMode) print('Error creating task: $e');
+    }
+  }
+
+  Future<void> deleteTask(Task task) async {
+    try {
+      await _taskRepository.deleteTask(task);
+      await loadTasks();
+    } catch (e) {
+      if (kDebugMode) print('Error deleting task: $e');
     }
   }
 }
