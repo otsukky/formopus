@@ -37,7 +37,7 @@ class _TaskScreenState extends State<TaskScreen> {
               children: [
                 // TODO 登録されたタスクに応じてサマリを表示する
                 DailySummary(
-                  date: DateTime(2025, 1, 1),
+                  date: DateTime.now(),
                   total: viewModel.tasks.length,
                   completed: viewModel.tasks
                       .where((task) => task.status.isComplete())
