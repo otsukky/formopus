@@ -50,4 +50,11 @@ class TaskRepositoryImpl implements TaskRepository {
     await Future.delayed(const Duration(milliseconds: 500)); // 擬似的な非同期処理
     _tasks.add(task);
   }
+
+  @override
+  Future<void> deleteTask(Task task) async {
+    // TODO DBへの保存に変更
+    await Future.delayed(const Duration(milliseconds: 500)); // 擬似的な非同期処理
+    _tasks.remove(task);
+  }
 }

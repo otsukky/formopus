@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:formopus/domain/status.dart';
 import 'package:formopus/domain/task.dart';
 import 'package:formopus/ui/widgets/delete_confirmation.dart';
+import 'package:provider/provider.dart';
+
+import '../viewmodel/task_view_model.dart';
 
 class TodayTaskList extends StatefulWidget {
   const TodayTaskList({super.key, required this.tasks});
@@ -32,13 +35,27 @@ class _TodayTaskListState extends State<TodayTaskList> {
     if (!mounted) return;
 
     if (shouldDelete == true) {
-      setState(() => widget.tasks.remove(task));
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("$taskTitle を削除しました"),
-          duration: const Duration(seconds: 2),
-        ),
-      );
+      try {
+        await Provider.of<TaskViewModel>(
+          context,
+          listen: false,
+        ).deleteTask(task);
+
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("$taskTitle を削除しました"),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("$taskTitle を削除に失敗しました"),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
     }
   }
 
